@@ -11,7 +11,7 @@ Format   j ;
 
 PROPERTY ATMEL { xor_synthesis on } ;
 PROPERTY ATMEL { logic_doubling on } ;
-PROPERTY ATMEL { jtag=on } ;
+PROPERTY ATMEL { jtag on } ;
 PROPERTY ATMEL { preassign keep } ;
 PROPERTY ATMEL { TMS_pullup on } ;
 PROPERTY ATMEL { TDI_pullup on } ;
@@ -19,6 +19,7 @@ PROPERTY ATMEL { output_fast on } ;
 /*PROPERTY ATMEL { dedicated_input on } ;*/
 PROPERTY ATMEL { foldback_logic on } ;
 PROPERTY ATMEL { cascade_logic on } ;
+PROPERTY ATMEL { open_collector=AeqB } ;
 
 /* *************** INPUT PINS *********************/
 PIN  11 = Cn                      ; /*                                 */ 
