@@ -1,0 +1,95 @@
+Name     74pal181 ;
+PartNo   00 ;
+Date     4/12/2023 ;
+Revision 01 ;
+Designer James M. ;
+Company  Rainy Day Plans ;
+Assembly None ;
+Location  ;
+Device   f1502isptqfp44 ;
+Format   j ;
+
+PROPERTY ATMEL { xor_synthesis on } ;
+PROPERTY ATMEL { logic_doubling on } ;
+PROPERTY ATMEL { jtag=on } ;
+PROPERTY ATMEL { preassign keep } ;
+PROPERTY ATMEL { TMS_pullup on } ;
+PROPERTY ATMEL { TDI_pullup on } ;
+PROPERTY ATMEL { output_fast on } ;
+/*PROPERTY ATMEL { dedicated_input on } ;*/
+PROPERTY ATMEL { foldback_logic on } ;
+PROPERTY ATMEL { cascade_logic on } ;
+
+/* *************** INPUT PINS *********************/
+PIN  11 = Cn                      ; /*                                 */ 
+PIN   2 = _A0                     ; /*                                 */ 
+PIN  33 = _A1                     ; /*                                 */ 
+PIN  28 = _A2                     ; /*                                 */ 
+PIN  25 = _A3                     ; /*                                 */ 
+PIN  44 = _B0                     ; /*                                 */ 
+PIN  31 = _B1                     ; /*                                 */ 
+PIN  27 = _B2                     ; /*                                 */ 
+PIN  23 = _B3                     ; /*                                 */ 
+PIN  10 = S0                      ; /*                                 */ 
+PIN   8 = S1                      ; /*                                 */ 
+PIN   5 = S2                      ; /*                                 */ 
+PIN   3 = S3                      ; /*                                 */ 
+PIN  12 = M                       ; /*                                 */ 
+
+/* *************** OUTPUT PINS *********************/
+PIN  22 = _G                      ; /*                                 */ 
+PIN  20 = _P                      ; /*                                 */ 
+PIN  13 = _F0                     ; /*                                 */ 
+PIN  14 = _F1                     ; /*                                 */ 
+PIN  15 = _F2                     ; /*                                 */ 
+PIN  18 = _F3                     ; /*                                 */ 
+PIN  19 = AeqB                    ; /*                                 */ 
+PIN  21 = Cn4                     ; /*                                 */ 
+
+/* *************** INTERNAL NODES ******************/
+NODE s4 ;
+NODE s5 ;
+NODE s6 ;
+NODE s7 ;
+NODE s8 ;
+NODE s9 ;
+NODE s10 ;
+NODE s11 ;
+NODE s12 ;
+NODE s13 ;
+NODE s14 ;
+NODE s15 ;
+NODE s16 ;
+NODE _F0_temp ;
+NODE _F1_temp ;
+NODE _F2_temp ;
+NODE _G_temp ;
+NODE _F3_temp ;
+
+
+s4 = ! _B0 ;
+s7 = ! _B1 ;
+s10 = ! _B2 ;
+s13 = ! _B3 ;
+s16 = ! M;
+s5 = ! ((s4 & S1) # (S0 & _B0 ) # _A0 );
+s6 = ! ((S3 & _B0  & _A0 ) # (_A0  & S2 & s4));
+s8 = ! ((s7 & S1) # (S0 & _B1 ) # _A1 );
+s9 = ! ((_B1  & S3 & _A1 ) # (_A1  & S2 & s7));
+s11 = ! ((s10 & S1) # (S0 & _B2 ) # _A2 );
+s12 = ! ((_B2  & S3 & _A2 ) # (_A2  & S2 & s10));
+s14 = ! ((s13 & S1) # (S0 & _B3 ) # _A3 );
+s15 = ! ((S3 & _B3  & _A3 ) # (_A3  & S2 & s13));
+_F0_temp  = ((s6 & ! s5) $ ! (s16 & Cn));
+_F1_temp  = ((s9 & ! s8) $ ! ((Cn & s6 & s16) # (s5 & s16)));
+_F2_temp  = ((s12 & ! s11) $ ! ((s9 & s6 & Cn & s16) # (s9 & s5 & s16) # (s8 & s16)));
+_F3_temp  = ((s15 & ! s14) $ ! ((s12 & s9 & s6 & Cn & s16) # (s12 & s9 & s5 & s16) # (s12 & s8 & s16) # (s11 & s16)));
+_P  = ! (s15 & s12 & s9 & s6);
+_G_temp  = ! (s14 # (s15 & s11) # (s15 & s12 & s8) # (s15 & s12 & s9 & s5));
+AeqB  = (_F3_temp  & _F2_temp  & _F1_temp  & _F0_temp );
+Cn4  = ! (_G_temp  & ! (s15 & s12 & s9 & s6 & Cn));
+_G  = _G_temp ;
+_F0  = _F0_temp ;
+_F1  = _F1_temp ;
+_F2  = _F2_temp ;
+_F3  = _F3_temp ;
